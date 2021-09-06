@@ -1,5 +1,5 @@
+use time_interface::*;
 use wasmbus_rpc::provider::prelude::*;
-use wasmcloud_interface_factorial::*;
 use wasmcloud_test_util::{
     check,
     cli::print_test_results,
@@ -12,7 +12,8 @@ use wasmcloud_test_util::{run_selected, run_selected_spawn};
 #[tokio::test]
 async fn run_all() {
     let opts = TestOptions::default();
-    let res = run_selected_spawn!(&opts, health_check, factorial_0_1, factorial_more);
+    let res = run_selected_spawn!(&opts, health_check, timestamp_ne_0);
+    //let res = run_selected_spawn!(&opts, health_check, factorial_0_1, factorial_more);
     print_test_results(&res);
 
     let passed = res.iter().filter(|tr| tr.pass).count();
@@ -34,6 +35,20 @@ async fn health_check(_opt: &TestOptions) -> RpcResult<()> {
     Ok(())
 }
 
+/// test basic functionality of timestamp()
+async fn timestamp_ne_0(_opt: &TestOptions) -> RpcResult<()> {
+    let prov = test_provider().await;
+
+    let client = TimeSender::via(prov);
+    let ctx = Context::default();
+
+    let resp = client.get_timestamp(&ctx).await?;
+    assert_ne!(resp, 0, "Current time != 0");
+
+    Ok(())
+}
+
+/*
 /// tests of the Factorial capability
 async fn factorial_0_1(_opt: &TestOptions) -> RpcResult<()> {
     let prov = test_provider().await;
@@ -70,3 +85,4 @@ async fn factorial_more(_opt: &TestOptions) -> RpcResult<()> {
 
     Ok(())
 }
+*/
