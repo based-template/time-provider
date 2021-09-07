@@ -71,8 +71,6 @@ impl MessageDispatch for TimeProviderProvider {
     async fn dispatch(&self, ctx: &Context, message: Message<'_>) -> RpcResult<Message<'_>> {
         let op = match message.method.split_once('.') {
             Some((cls, op)) if cls == "Time" => op,
-            //Some((cls, op)) if cls == "GetTimestamp" => op,
-            //Some((cls, op)) if cls == "FormatTimestamp" => op,
             None => message.method,
             _ => {
                 return Err(RpcError::MethodNotHandled(message.method.to_string()));
