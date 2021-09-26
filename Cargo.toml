@@ -22,8 +22,7 @@ thiserror = "1.0"
 tokio = { version = "1", features = ["full"] }
 toml = "0.5"
 time-interface = { git = "https://github.com/based-template/wasmcloud-time-interface.git" }
-#wasmcloud-interface-factorial = "0.1"
-wasmbus-rpc = "0.3"
+wasmbus-rpc = "0.4"
 
 # test dependencies
 [dev-dependencies]
