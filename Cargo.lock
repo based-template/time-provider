@@ -1147,9 +1147,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.102"
+version = "0.2.103"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2a5ac8f984bfcf3a823267e5fde638acc3325f6496633a5da6bb6eb2171e103"
+checksum = "dd8f7255a17a627354f321ef0055d63b898c6fb27eff628af4d1b66b7331edf6"
 
 [[package]]
 name = "lock_api"
@@ -2805,9 +2805,9 @@ dependencies = [
 
 [[package]]
 name = "wasmbus-rpc"
-version = "0.4.3"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8cd0f0228ceaf54a7072d5073d8ee083674ca2cb02c667d3d06d2aa1b2464c6e"
+checksum = "3242159c8e62fb93b5de695f6b84f52d346c8583aed6d68538f20c38c65518da"
 dependencies = [
  "async-trait",
  "base64",

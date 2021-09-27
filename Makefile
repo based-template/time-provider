@@ -1,6 +1,6 @@
 # time-provider Makefile
 
-CAPABILITY_ID = "auxiliary::interfaces::timestamp"
+CAPABILITY_ID = "auxiliary::interfaces::time"
 NAME = "time-provider"
 VENDOR = "OMT"
 PROJECT = time_provider
