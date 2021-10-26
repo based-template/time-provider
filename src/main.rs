@@ -4,7 +4,7 @@
 use chrono::{DateTime, NaiveDateTime, Utc};
 #[allow(unused_imports)]
 use log::{debug, error, info, trace, warn};
-use time_interface::{FormatTimeRequest, Time, TimeReceiver};
+use time_interface::{FormatTimeRequest, Time, TimeReceiver, TimeStamp};
 use wasmbus_rpc::provider::prelude::*;
 //use wasmcloud_interface_factorial::{Factorial, FactorialReceiver};
 
@@ -32,32 +32,34 @@ impl ProviderHandler for TimeProviderProvider {}
 #[async_trait]
 impl Time for TimeProviderProvider {
     /// Provides time according to Unix epoch format
-    async fn get_timestamp(&self, _ctx: &Context) -> RpcResult<u64> {
+    async fn get_timestamp(&self, _ctx: &Context) -> RpcResult<TimeStamp> {
         Ok(timestamp())
     }
 
     async fn format_timestamp(&self, _ctx: &Context, arg: &FormatTimeRequest) -> RpcResult<String> {
         Ok(timestamp_format_string(
-            arg.timestamp,
+            arg.timestamp.clone(),
             arg.rfc.to_uppercase(),
         ))
     }
 }
 
 /// Get UTC timestamp w/ millisecond precision
-fn timestamp() -> u64 {
+fn timestamp() -> TimeStamp {
     let utc_time: DateTime<Utc> = Utc::now();
-    return utc_time.timestamp_millis() as u64;
+    let timestamp = TimeStamp {
+        sec: utc_time.timestamp(),
+        nsec: utc_time.timestamp_subsec_nanos(),
+    };
+    return timestamp;
 }
 
 /// Convert timestamp to DateTime, then format as a string according to RFC specified
-fn timestamp_format_string(timestamp: u64, rfc_format: String) -> String {
-    let u64_secs = timestamp / 1000;
-    let u64_msecs = timestamp - u64_secs;
-    let u32_nsecs = (u64_msecs * 1000000) as u32;
-    let i64_timestamp = u64_secs as i64;
-    let dt =
-        DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(i64_timestamp, u32_nsecs), Utc);
+fn timestamp_format_string(timestamp: TimeStamp, rfc_format: String) -> String {
+    let dt = DateTime::<Utc>::from_utc(
+        NaiveDateTime::from_timestamp(timestamp.sec, timestamp.nsec),
+        Utc,
+    );
     if rfc_format.eq("RFC2822") {
         return dt.to_rfc2822();
     } else {

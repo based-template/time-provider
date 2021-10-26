@@ -1,6 +1,6 @@
 [package]
 name = "time-provider"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2018"
 resolver = "2"
 
@@ -22,11 +22,11 @@ thiserror = "1.0"
 tokio = { version = "1", features = ["full"] }
 toml = "0.5"
 time-interface = { git = "https://github.com/based-template/wasmcloud-time-interface.git" }
-wasmbus-rpc = "0.4"
+wasmbus-rpc = "0.5.2"
 
 # test dependencies
 [dev-dependencies]
-wasmcloud-test-util = "0.1"
+wasmcloud-test-util = "0.1.7"
 
 [[bin]]
 name = "time_provider"
